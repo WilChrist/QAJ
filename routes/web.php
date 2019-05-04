@@ -19,3 +19,21 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index');
+
+
+
+
+
+
+
+
+
+
+
+Route::resource('categories', 'CategoryController');
+
+Route::resource('authors', 'AuthorController');
+
+Route::resource('languages', 'LanguageController');
+
+Route::resource('quotes', 'QuoteController');

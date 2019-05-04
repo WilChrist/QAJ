@@ -171,6 +171,8 @@ return [
         \InfyOm\Generator\InfyOmGeneratorServiceProvider::class,
         \InfyOm\AdminLTETemplates\AdminLTETemplatesServiceProvider::class,
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        Yajra\DataTables\DataTablesServiceProvider::class,
+        Appointer\Swaggervel\SwaggervelServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -234,6 +236,7 @@ return [
         'Html'      => Collective\Html\HtmlFacade::class,
         'Flash'     => Laracasts\Flash\Flash::class,
 
+        'DataTables' => Yajra\DataTables\Facades\Datatables::class,
     ],
 
 ];

@@ -118,9 +118,9 @@ return [
 
     'options' => [
 
-        'softDelete' => true,
+        'softDelete' => false,
 
-        'tables_searchable_default' => false,
+        'tables_searchable_default' => true,
     ],
 
     /*
@@ -150,7 +150,7 @@ return [
 
     'add_on' => [
 
-        'swagger'       => false,
+        'swagger'       => true,
 
         'tests'         => true,
 
