@@ -23,6 +23,7 @@ class CategoryAPIController extends AppBaseController
     public function __construct(CategoryRepository $categoryRepo)
     {
         $this->categoryRepository = $categoryRepo;
+        $this->middleware('auth:api',['except'=>['index','show']]);
     }
 
     /**

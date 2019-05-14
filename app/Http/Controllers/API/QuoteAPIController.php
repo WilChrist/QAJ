@@ -23,6 +23,7 @@ class QuoteAPIController extends AppBaseController
     public function __construct(QuoteRepository $quoteRepo)
     {
         $this->quoteRepository = $quoteRepo;
+        $this->middleware('auth:api',['except'=>['index','show']]);
     }
 
     /**
@@ -63,7 +64,7 @@ class QuoteAPIController extends AppBaseController
         $includes=($request->input('include')!==null)?explode(',',$request->input('include')):[];
         
         $withRelations=array_values(array_intersect($expectedIncludes,$includes));
-        
+
         $quotes = $this->quoteRepository->allSSLCWith(
             $request->except(['skip', 'limit']),
             $request->get('skip'),

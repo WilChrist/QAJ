@@ -23,6 +23,7 @@ class AuthorAPIController extends AppBaseController
     public function __construct(AuthorRepository $authorRepo)
     {
         $this->authorRepository = $authorRepo;
+        $this->middleware('auth:api',['except'=>['index','show']]);
     }
 
     /**
