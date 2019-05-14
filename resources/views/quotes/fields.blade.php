@@ -21,20 +21,20 @@
 
 <!-- Author Id Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('author_id', 'Author Id:') !!}
-    {!! Form::number('author_id', null, ['class' => 'form-control']) !!}
+    {!! Form::label('author_id', 'Author:') !!}
+    {!! Form::select('author_id', $data['authors'],null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- Language Id Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('language_id', 'Language Id:') !!}
-    {!! Form::number('language_id', null, ['class' => 'form-control']) !!}
+    {!! Form::label('language_id', 'Language:') !!}
+    {!! Form::select('language_id',$data['languages'], null, ['class' => 'form-control']) !!}
 </div>
 
 <!-- User Id Field -->
 <div class="form-group col-sm-6">
-    {!! Form::label('user_id', 'User Id:') !!}
-    {!! Form::number('user_id', null, ['class' => 'form-control']) !!}
+    {!! Form::label('category_ids', 'Categories:') !!}
+    {!! Form::select('category_ids[]',$data['categories'], $data['quote']->quoteCategories, ['class' => 'form-control many_categories','multiple'=>'multiple']) !!}
 </div>
 
 <!-- Submit Field -->

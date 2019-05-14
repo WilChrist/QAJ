@@ -70,14 +70,19 @@ class Quote extends Model
     const UPDATED_AT = 'updated_at';
 
 
+    /**
+     * The relationships that should always be loaded.
+     *
+     * @var array
+     */
+    
 
     public $fillable = [
         'content',
         'link_to_the_source',
         'approuved',
         'author_id',
-        'language_id',
-        'user_id'
+        'language_id'
     ];
 
     /**
@@ -105,8 +110,7 @@ class Quote extends Model
         'link_to_the_source' => 'required',
         'approuved' => 'required',
         'author_id' => 'required',
-        'language_id' => 'required',
-        'user_id' => 'required'
+        'language_id' => 'required'
     ];
 
     /**
@@ -138,6 +142,6 @@ class Quote extends Model
      **/
     public function quoteCategories()
     {
-        return $this->hasMany(\App\Models\QuoteCategory::class);
+        return $this->belongsToMany(\App\Models\Category::class,'quote_categories','quote_id','category_id');
     }
 }

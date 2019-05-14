@@ -59,10 +59,17 @@ class QuoteAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $quotes = $this->quoteRepository->all(
+        $expectedIncludes=['author','language','quoteCategories'];
+        $includes=($request->input('include')!==null)?explode(',',$request->input('include')):[];
+        
+        $withRelations=array_values(array_intersect($expectedIncludes,$includes));
+        
+        $quotes = $this->quoteRepository->allSSLCWith(
             $request->except(['skip', 'limit']),
             $request->get('skip'),
-            $request->get('limit')
+            $request->get('limit'),
+            ['*'],
+            $withRelations
         );
 
         return $this->sendResponse($quotes->toArray(), 'Quotes retrieved successfully');

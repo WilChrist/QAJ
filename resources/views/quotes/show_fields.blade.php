@@ -19,7 +19,7 @@
 <!-- Approuved Field -->
 <div class="form-group">
     {!! Form::label('approuved', 'Approuved:') !!}
-    <p>{!! $quote->approuved !!}</p>
+    <p>{{$quote->approuved?"yes":"no"}}</p>
 </div>
 
 <!-- Created At Field -->
@@ -36,19 +36,22 @@
 
 <!-- Author Id Field -->
 <div class="form-group">
-    {!! Form::label('author_id', 'Author Id:') !!}
-    <p>{!! $quote->author_id !!}</p>
+    {!! Form::label('author_id', 'Author:') !!}
+    <p>{!! $quote->author->full_name !!}</p>
 </div>
 
 <!-- Language Id Field -->
 <div class="form-group">
-    {!! Form::label('language_id', 'Language Id:') !!}
-    <p>{!! $quote->language_id !!}</p>
+    {!! Form::label('language_id', 'Language :') !!}
+    <p>{!! $quote->language->name !!}</p>
 </div>
 
-<!-- User Id Field -->
+<!-- Categories Ids Field -->
 <div class="form-group">
-    {!! Form::label('user_id', 'User Id:') !!}
-    <p>{!! $quote->user_id !!}</p>
+    {!! Form::label('category_id', 'Categories :') !!}
+    @foreach($quote->quoteCategories as $category)
+        <p>{!! $category->name !!}</p>
+    @endforeach
 </div>
+
 

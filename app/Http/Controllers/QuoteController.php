@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateQuoteRequest;
 use App\Http\Requests\UpdateQuoteRequest;
+use App\Models\Author;
+use App\Models\Category;
+use App\Models\Language;
+use App\Models\Quote;
 use App\Repositories\QuoteRepository;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
@@ -29,8 +33,11 @@ class QuoteController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $quotes = $this->quoteRepository->all();
+        $quotes = $this->quoteRepository->allWith(['author','language','quoteCategories']);
 
+        $categories=Category::all();
+        
+        //dd($data);
         return view('quotes.index')
             ->with('quotes', $quotes);
     }
@@ -72,8 +79,8 @@ class QuoteController extends AppBaseController
      */
     public function show($id)
     {
-        $quote = $this->quoteRepository->find($id);
-
+        $quote = $this->quoteRepository->findByIdWith($id,['author','language','quoteCategories']);
+        
         if (empty($quote)) {
             Flash::error('Quote not found');
 
@@ -93,14 +100,24 @@ class QuoteController extends AppBaseController
     public function edit($id)
     {
         $quote = $this->quoteRepository->find($id);
-
+        $authors=Author::pluck('full_name','id');
+        $categories=Category::pluck('name','id');
+        $languages=Language::pluck('name','id');
+        
+        $data=array(
+            'authors'=>$authors,
+            'quote'=>$quote,
+            'categories'=>$categories,
+            'languages'=>$languages
+        );
+        //dd($data);
         if (empty($quote)) {
             Flash::error('Quote not found');
 
             return redirect(route('quotes.index'));
         }
 
-        return view('quotes.edit')->with('quote', $quote);
+        return view('quotes.edit')->with('data', $data);
     }
 
     /**
@@ -113,6 +130,8 @@ class QuoteController extends AppBaseController
      */
     public function update($id, UpdateQuoteRequest $request)
     {
+        //dd($request->category_ids);
+        
         $quote = $this->quoteRepository->find($id);
 
         if (empty($quote)) {
@@ -120,7 +139,16 @@ class QuoteController extends AppBaseController
 
             return redirect(route('quotes.index'));
         }
-
+        $quote1=$this->quoteRepository->find($id);
+        /*$qc=[];
+        foreach ($request->category_ids as $category_id){
+            $c=Category::all()->find($category_id);
+            array_push($qc,$c);
+        }*/
+        $quote1->quoteCategories()->sync($request->category_ids);
+        
+        //$quote1->save();
+//dd($quote1);
         $quote = $this->quoteRepository->update($request->all(), $id);
 
         Flash::success('Quote updated successfully.');

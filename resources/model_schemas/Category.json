@@ -3,7 +3,7 @@
         "name": "id",
         "dbType": "bigInteger,true,true",
         "htmlType": null,
-        "validations": "required",
+        "validations": null,
         "searchable": false,
         "fillable": false,
         "primary": true,

@@ -42,4 +42,17 @@ class QuoteRepository extends BaseRepository
     {
         return Quote::class;
     }
+
+    public function allWith($key){
+        return Quote::with($key)->get();
+    }
+    public function findByIdWith($id,$key){
+        return Quote::with($key)->find($id);
+    }
+    public function allSSLCWith($search = [], $skip = null, $limit = null, $columns = ['*'], $relations = [])
+    {
+        $query = $this->allQuery($search, $skip, $limit);
+        $query->with($relations);
+        return $query->get($columns);
+    }
 }
