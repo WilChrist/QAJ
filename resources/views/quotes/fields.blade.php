@@ -15,7 +15,7 @@
     {!! Form::label('approuved', 'Approuved:') !!}
     <label class="checkbox-inline">
         {!! Form::hidden('approuved', 0) !!}
-        {!! Form::checkbox('approuved', '1', null) !!} 1
+        {!! Form::checkbox('approuved', '1', null) !!}
     </label>
 </div>
 

@@ -36,7 +36,7 @@ class QuoteController extends AppBaseController
         $quotes = $this->quoteRepository->allWith(['author','language','quoteCategories']);
 
         $categories=Category::all();
-        
+
         //dd($data);
         return view('quotes.index')
             ->with('quotes', $quotes);
@@ -49,7 +49,17 @@ class QuoteController extends AppBaseController
      */
     public function create()
     {
-        return view('quotes.create');
+        $authors=Author::pluck('full_name','id');
+        $categories=Category::pluck('name','id');
+        $languages=Language::pluck('name','id');
+        $quote = new Quote();
+        $data=array(
+            'authors'=>$authors,
+            'categories'=>$categories,
+            'languages'=>$languages,
+            'quote'=>$quote
+        );
+        return view('quotes.create')->with('data', $data);
     }
 
     /**
@@ -62,6 +72,8 @@ class QuoteController extends AppBaseController
     public function store(CreateQuoteRequest $request)
     {
         $input = $request->all();
+        $input['user_id']=$request->user()->id;
+        //dd($input);
 
         $quote = $this->quoteRepository->create($input);
 
@@ -80,7 +92,7 @@ class QuoteController extends AppBaseController
     public function show($id)
     {
         $quote = $this->quoteRepository->findByIdWith($id,['author','language','quoteCategories']);
-        
+
         if (empty($quote)) {
             Flash::error('Quote not found');
 
@@ -103,7 +115,7 @@ class QuoteController extends AppBaseController
         $authors=Author::pluck('full_name','id');
         $categories=Category::pluck('name','id');
         $languages=Language::pluck('name','id');
-        
+
         $data=array(
             'authors'=>$authors,
             'quote'=>$quote,
@@ -131,7 +143,7 @@ class QuoteController extends AppBaseController
     public function update($id, UpdateQuoteRequest $request)
     {
         //dd($request->category_ids);
-        
+
         $quote = $this->quoteRepository->find($id);
 
         if (empty($quote)) {
@@ -146,7 +158,7 @@ class QuoteController extends AppBaseController
             array_push($qc,$c);
         }*/
         $quote1->quoteCategories()->sync($request->category_ids);
-        
+
         //$quote1->save();
 //dd($quote1);
         $quote = $this->quoteRepository->update($request->all(), $id);

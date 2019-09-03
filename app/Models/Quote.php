@@ -65,7 +65,7 @@ class Quote extends Model
 {
 
     public $table = 'quotes';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -75,14 +75,15 @@ class Quote extends Model
      *
      * @var array
      */
-    
+
 
     public $fillable = [
         'content',
         'link_to_the_source',
         'approuved',
         'author_id',
-        'language_id'
+        'language_id',
+        'user_id'
     ];
 
     /**
