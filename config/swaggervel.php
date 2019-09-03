@@ -71,9 +71,9 @@ return [
       |--------------------------------------------------------------------------
     */
     'view-headers' => [
-        // 'Access-Control-Allow-Origin' => '*',
-        // 'Access-Control-Allow-Methods' => 'GET, POST',
-        // 'Access-Control-Allow-Headers' => 'X-Requested-With',
+         'Access-Control-Allow-Origin' => '*',
+         'Access-Control-Allow-Methods' => 'GET, POST',
+         'Access-Control-Allow-Headers' => 'X-Requested-With',
     ],
 
     /*
