@@ -22,6 +22,7 @@ class QuoteController extends AppBaseController
     public function __construct(QuoteRepository $quoteRepo)
     {
         $this->quoteRepository = $quoteRepo;
+        $this->middleware('auth');
     }
 
     /**

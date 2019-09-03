@@ -18,6 +18,7 @@ class LanguageController extends AppBaseController
     public function __construct(LanguageRepository $languageRepo)
     {
         $this->languageRepository = $languageRepo;
+        $this->middleware('auth');
     }
 
     /**
