@@ -55,6 +55,17 @@
         "inIndex": true
     },
     {
+        "name": "image_url",
+        "dbType": "string",
+        "htmlType": "text",
+        "validations": null,
+        "searchable": true,
+        "fillable": true,
+        "primary": false,
+        "inForm": true,
+        "inIndex": true
+    },
+    {
         "name": "created_at",
         "dbType": "datetime",
         "htmlType": "date",

@@ -830,6 +830,10 @@
                     "description": "link_to_full_biography",
                     "type": "string"
                 },
+                "image_url": {
+                    "description": "image_url",
+                    "type": "string"
+                },
                 "created_at": {
                     "description": "created_at",
                     "type": "string",

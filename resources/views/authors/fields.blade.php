@@ -22,6 +22,18 @@
     {!! Form::text('link_to_full_biography', null, ['class' => 'form-control']) !!}
 </div>
 
+<div class="form-group col-sm-6">
+    {!! Form::label('image_url', 'Image:') !!}
+    <div class="input-group">
+        <label class="input-group-btn">
+            <span class="btn btn-primary">
+                Selectionner un fichier<input type="file" style="display: none;" name="image_url" id="image_url">
+            </span>
+        </label>
+        <input type="text" class="form-control" readonly value="{!! $author->image_url ?? null !!}">
+    </div>
+</div>
+
 <!-- Submit Field -->
 <div class="form-group col-sm-12">
     {!! Form::submit('Save', ['class' => 'btn btn-primary']) !!}

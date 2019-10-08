@@ -7,11 +7,16 @@ use App\Http\Requests\UpdateAuthorRequest;
 use App\Repositories\AuthorRepository;
 use App\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+
+use App\Traits\UploadTrait;
 use Flash;
 use Response;
 
 class AuthorController extends AppBaseController
 {
+    use UploadTrait;
+
     /** @var  AuthorRepository */
     private $authorRepository;
 
@@ -56,6 +61,12 @@ class AuthorController extends AppBaseController
     public function store(CreateAuthorRequest $request)
     {
         $input = $request->all();
+        $filePath = $this->uploadImage($request);
+        if($filePath!=null){
+            // Set image path in database to filePath
+            $input['image_url'] = $filePath;
+        }
+
 
         $author = $this->authorRepository->create($input);
 
@@ -115,14 +126,23 @@ class AuthorController extends AppBaseController
     public function update($id, UpdateAuthorRequest $request)
     {
         $author = $this->authorRepository->find($id);
-
+//dd($author);
         if (empty($author)) {
             Flash::error('Author not found');
 
             return redirect(route('authors.index'));
         }
 
-        $author = $this->authorRepository->update($request->all(), $id);
+        $filePath = $this->uploadImage($request);//dd($request);
+        $input = $request->all();
+        if($filePath!=null){
+            // Set image path in database to filePath
+            $input['image_url'] = $filePath;
+        }else{
+            $input['image_url'] = $author->image_url;
+        }
+
+        $author = $this->authorRepository->update($input, $id);
 
         Flash::success('Author updated successfully.');
 
@@ -153,5 +173,39 @@ class AuthorController extends AppBaseController
         Flash::success('Author deleted successfully.');
 
         return redirect(route('authors.index'));
+    }
+
+    /**
+     * Upload the image, store it and return the path.
+     *
+     * @param Request $request
+     *
+     * @throws \Exception
+     *
+     * @return string
+     */
+    public function uploadImage($request)
+    {
+        // Form validation
+
+        $filePath=null;
+        //dd($request->file('image_url'));
+        // Check if a image has been uploaded
+        if ($request->has('image_url') && $request->file('image_url')!=null) {
+            $request->validate([
+                'image_url'     =>  'image|mimes:jpeg,png,jpg,gif|max:2048'
+                ]);
+            // Get image file
+            $image = $request->file('image_url');
+            // Make a image name based on popular_name and current timestamp
+            $name = Str::slug($request->input('popular_name')).'_'.time();
+            // Define folder path
+            $folder = '/img/';
+            // Make a file path where image will be stored [ folder path + file name + file extension]
+            $filePath = $folder . $name. '.' . $image->getClientOriginalExtension();
+            // Upload image
+            $this->uploadOne($image, $folder, 'public', $name);
+        }
+        return $filePath;
     }
 }

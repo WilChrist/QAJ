@@ -5,6 +5,7 @@
         <th>Popular Name</th>
         <th>Biography</th>
         <th>Link To Full Biography</th>
+        <th>Image of the author</th>
             <th colspan="3">Action</th>
         </tr>
     </thead>
@@ -15,6 +16,11 @@
             <td>{!! $author->popular_name !!}</td>
             <td>{!! $author->biography !!}</td>
             <td>{!! $author->link_to_full_biography !!}</td>
+            <td>
+                <div class="form-group">
+                    <img src="{!! $author->image_url !!}" class="img-thumbnail img-responsive" alt="image of {!! $author->popular_name !!}">
+                </div>
+            </td>
             <td>
                 {!! Form::open(['route' => ['authors.destroy', $author->id], 'method' => 'delete']) !!}
                 <div class='btn-group'>

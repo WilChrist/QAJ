@@ -27,6 +27,10 @@
     {!! Form::label('link_to_full_biography', 'Link To Full Biography:') !!}
     <p>{!! $author->link_to_full_biography !!}</p>
 </div>
+<div class="form-group">
+    {!! Form::label('image_url', 'Image of the author:') !!}
+    <img src="{!! $author->image_url !!}" class="img-thumbnail img-responsive" width="200px" alt="image of {!! $author->popular_name !!}">
+</div>
 
 <!-- Created At Field -->
 <div class="form-group">

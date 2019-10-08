@@ -35,6 +35,11 @@ use Eloquent as Model;
  *          type="string"
  *      ),
  *      @SWG\Property(
+ *          property="image_url",
+ *          description="url of the image of the author",
+ *          type="string"
+ *      ),
+ *      @SWG\Property(
  *          property="created_at",
  *          description="created_at",
  *          type="string",
@@ -52,7 +57,7 @@ class Author extends Model
 {
 
     public $table = 'authors';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -62,7 +67,8 @@ class Author extends Model
         'full_name',
         'popular_name',
         'biography',
-        'link_to_full_biography'
+        'link_to_full_biography',
+        'image_url'
     ];
 
     /**
@@ -75,7 +81,8 @@ class Author extends Model
         'full_name' => 'string',
         'popular_name' => 'string',
         'biography' => 'string',
-        'link_to_full_biography' => 'string'
+        'link_to_full_biography' => 'string',
+        'image_url' => 'string'
     ];
 
     /**
@@ -96,5 +103,10 @@ class Author extends Model
     public function quotes()
     {
         return $this->hasMany(\App\Models\Quote::class);
+    }
+
+    public function getImageAttribute()
+    {
+        return $this->image_url;
     }
 }
