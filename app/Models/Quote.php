@@ -115,6 +115,14 @@ class Quote extends Model
     ];
 
     /**
+
+    * the fields that shouln't be retrieved
+    *
+    * @var array
+    */
+   protected $hidden = ['created_at','updated_at'];
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
     public function author()
@@ -139,9 +147,17 @@ class Quote extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      **/
     public function quoteCategories()
+    {
+        return $this->belongsToMany(\App\Models\Category::class,'quote_categories','quote_id','category_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     **/
+    public function topics()
     {
         return $this->belongsToMany(\App\Models\Category::class,'quote_categories','quote_id','category_id');
     }

@@ -19,9 +19,10 @@ class QuoteAPIController extends AppBaseController
 {
     /** @var  QuoteRepository */
     private $quoteRepository;
-
+    private $fieldsToReturn;
     public function __construct(QuoteRepository $quoteRepo)
     {
+        $this->fieldsToReturn=['id','content','link_to_the_source','author_id','language_id'];
         $this->quoteRepository = $quoteRepo;
         $this->middleware('auth:api',['except'=>['index','show']]);
     }
@@ -60,16 +61,16 @@ class QuoteAPIController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $expectedIncludes=['author','language','quoteCategories'];
+        $expectedIncludes=['author','language','topics'];
         $includes=($request->input('include')!==null)?explode(',',$request->input('include')):[];
-        
+
         $withRelations=array_values(array_intersect($expectedIncludes,$includes));
 
         $quotes = $this->quoteRepository->allSSLCWith(
             $request->except(['skip', 'limit']),
             $request->get('skip'),
             $request->get('limit'),
-            ['*'],
+            $this->fieldsToReturn,
             $withRelations
         );
 
@@ -164,8 +165,8 @@ class QuoteAPIController extends AppBaseController
     public function show($id)
     {
         /** @var Quote $quote */
-        $quote = $this->quoteRepository->find($id);
-
+        $quote = $this->quoteRepository->findByIdWith($id,['topics'],$this->fieldsToReturn);
+        //dd($quote);
         if (empty($quote)) {
             return $this->sendError('Quote not found');
         }

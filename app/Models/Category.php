@@ -42,7 +42,7 @@ class Category extends Model
 {
 
     public $table = 'categories';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -74,10 +74,18 @@ class Category extends Model
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * the fields that shouln't be retrieved
+     *
+     * @var array
+     */
+    protected $hidden = ['created_at','updated_at','pivot'];
+
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      **/
-    public function quoteCategories()
+    public function categoryQuotes()
     {
-        return $this->hasMany(\App\Models\QuoteCategory::class);
+        return $this->belongsToMany(\App\Models\Quote::class);
     }
 }

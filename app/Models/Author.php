@@ -98,6 +98,13 @@ class Author extends Model
     ];
 
     /**
+     * the fields that shouln't be retrieved
+     *
+     * @var array
+     */
+    protected $hidden = ['created_at','updated_at'];
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
     public function quotes()

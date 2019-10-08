@@ -43,12 +43,30 @@ class QuoteRepository extends BaseRepository
         return Quote::class;
     }
 
+    /**
+     * Retrieve all records including given relationship
+     *
+     * @param array $key
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
     public function allWith($key){
         return Quote::with($key)->get();
     }
-    public function findByIdWith($id,$key){
-        return Quote::with($key)->find($id);
+    public function findByIdWith($id, $key, $columns = ['*']){
+        return Quote::with($key)->find($id, $columns);
     }
+    /**
+     * Retrieve all records including given relationship with pagination
+     *
+     * @param array $search
+     * @param int|null $skip
+     * @param int|null $limit
+     * @param array $columns
+     * @param array $relations
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
     public function allSSLCWith($search = [], $skip = null, $limit = null, $columns = ['*'], $relations = [])
     {
         $query = $this->allQuery($search, $skip, $limit);
