@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Helpers\Utility;
 use App\Http\Requests\API\CreateCategoryAPIRequest;
 use App\Http\Requests\API\UpdateCategoryAPIRequest;
 use App\Models\Category;
@@ -154,10 +155,12 @@ class CategoryAPIController extends AppBaseController
      *      )
      * )
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
+        $withRelations=Utility::getRelationsForCategory($request);
+
         /** @var Category $category */
-        $category = $this->categoryRepository->find($id);
+        $category = $this->categoryRepository->findByIdWith($id,$withRelations);
 
         if (empty($category)) {
             return $this->sendError('Category not found');

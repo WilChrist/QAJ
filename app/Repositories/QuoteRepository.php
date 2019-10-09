@@ -53,6 +53,16 @@ class QuoteRepository extends BaseRepository
     public function allWith($key){
         return Quote::where('approuved','=','1')->with($key)->get();
     }
+
+    /**
+     * Retrieve a specific record with specify columns by it Id including given relationship (key)
+     *
+     * @param int $id
+     * @param array $key
+     * @param array $columns
+     *
+     * @return App\Models\Quote
+     */
     public function findByIdWith($id, $key, $columns = ['*']){
         return Quote::where('approuved','=','1')->with($key)->find($id, $columns);
     }

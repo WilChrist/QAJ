@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Helpers\Utility;
 use App\Http\Requests\API\CreateQuoteAPIRequest;
 use App\Http\Requests\API\UpdateQuoteAPIRequest;
 use App\Models\Quote;
@@ -63,7 +64,7 @@ class QuoteAPIController extends AppBaseController
     public function index(Request $request)
     {
 
-        $withRelations=$this->getRelations($request);
+        $withRelations=Utility::getRelationsForQuote($request);
 
         $quotes = $this->quoteRepository->allSSLCWith(
             $request->except(['skip', 'limit']),
@@ -163,7 +164,7 @@ class QuoteAPIController extends AppBaseController
      */
     public function show($id,Request $request)
     {
-        $withRelations=$this->getRelations($request);
+        $withRelations=Utility::getRelationsForQuote($request);
 
         /** @var Quote $quote */
         $quote = $this->quoteRepository->findByIdWith($id,$withRelations,$this->fieldsToReturn);
@@ -289,15 +290,4 @@ class QuoteAPIController extends AppBaseController
         return $this->sendResponse($id, 'Quote deleted successfully');
     }
 
-    /**
-     * @param Request $request
-     * @return array array of relations
-     */
-    public function getRelations(Request $request){
-        $expectedIncludes=['author','language','topics','quoteCategories'];
-        $includes=($request->input('include')!==null)?explode(',',$request->input('include')):[];
-
-        $withRelations=array_values(array_intersect($expectedIncludes,$includes));
-        return $withRelations;
-    }
 }

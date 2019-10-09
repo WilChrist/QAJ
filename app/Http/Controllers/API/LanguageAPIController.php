@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Helpers\Utility;
 use App\Http\Requests\API\CreateLanguageAPIRequest;
 use App\Http\Requests\API\UpdateLanguageAPIRequest;
 use App\Models\Language;
@@ -154,10 +155,11 @@ class LanguageAPIController extends AppBaseController
      *      )
      * )
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
+        $withRelations=Utility::getRelationsForLanguage($request);
         /** @var Language $language */
-        $language = $this->languageRepository->find($id);
+        $language = $this->languageRepository->findByIdWith($id, $withRelations);
 
         if (empty($language)) {
             return $this->sendError('Language not found');

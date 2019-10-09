@@ -86,6 +86,14 @@ class Category extends Model
      **/
     public function categoryQuotes()
     {
-        return $this->belongsToMany(\App\Models\Quote::class);
+        return $this->belongsToMany(\App\Models\Quote::class,'quote_categories','category_id','quote_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     **/
+    public function quotes()
+    {
+        return $this->belongsToMany(\App\Models\Quote::class,'quote_categories','category_id','quote_id');
     }
 }

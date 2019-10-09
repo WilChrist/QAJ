@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Helpers\Utility;
 use App\Http\Requests\API\CreateAuthorAPIRequest;
 use App\Http\Requests\API\UpdateAuthorAPIRequest;
 use App\Models\Author;
@@ -154,10 +155,12 @@ class AuthorAPIController extends AppBaseController
      *      )
      * )
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
+        $withRelations=Utility::getRelationsForAuthor($request);
+
         /** @var Author $author */
-        $author = $this->authorRepository->find($id);
+        $author = $this->authorRepository->findByIdWith($id,$withRelations);
 
         if (empty($author)) {
             return $this->sendError('Author not found');

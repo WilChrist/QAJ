@@ -40,4 +40,16 @@ class AuthorRepository extends BaseRepository
     {
         return Author::class;
     }
+    /**
+     * Retrieve a specific record with specify columns by it Id including given relationship (key)
+     *
+     * @param int $id
+     * @param array $key
+     * @param array $columns
+     *
+     * @return App\Models\Author
+     */
+    public function findByIdWith($id, $key, $columns = ['*']){
+        return Author::with($key)->find($id, $columns);
+    }
 }

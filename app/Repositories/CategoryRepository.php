@@ -38,4 +38,17 @@ class CategoryRepository extends BaseRepository
     {
         return Category::class;
     }
+
+    /**
+     * Retrieve a specific record with specify columns by it Id including given relationship (key)
+     *
+     * @param int $id
+     * @param array $key
+     * @param array $columns
+     *
+     * @return App\Models\Category
+     */
+    public function findByIdWith($id, $key, $columns = ['*']){
+        return Category::with($key)->find($id, $columns);
+    }
 }

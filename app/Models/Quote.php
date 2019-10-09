@@ -120,7 +120,7 @@ class Quote extends Model
     *
     * @var array
     */
-   protected $hidden = ['created_at','updated_at'];
+   protected $hidden = ['created_at','updated_at','approuved','pivot'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
