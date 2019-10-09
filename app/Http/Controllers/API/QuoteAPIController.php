@@ -33,7 +33,7 @@ class QuoteAPIController extends AppBaseController
      *
      * @SWG\Get(
      *      path="/quotes",
-     *      summary="Get a listing of the Quotes.",
+     *      summary="Get a listing of the Quotes. You can also get relations in same time by adding a query parameter include=<relation1,relation2,...> Expected relations are: 'author','language','topics','quoteCategories'",
      *      tags={"Quote"},
      *      description="Get all Quotes",
      *      produces={"application/json"},
@@ -59,12 +59,11 @@ class QuoteAPIController extends AppBaseController
      *      )
      * )
      */
+
     public function index(Request $request)
     {
-        $expectedIncludes=['author','language','topics'];
-        $includes=($request->input('include')!==null)?explode(',',$request->input('include')):[];
 
-        $withRelations=array_values(array_intersect($expectedIncludes,$includes));
+        $withRelations=$this->getRelations($request);
 
         $quotes = $this->quoteRepository->allSSLCWith(
             $request->except(['skip', 'limit']),
@@ -130,7 +129,7 @@ class QuoteAPIController extends AppBaseController
      *
      * @SWG\Get(
      *      path="/quotes/{id}",
-     *      summary="Display the specified Quote",
+     *      summary="Display the specified Quote and the ",
      *      tags={"Quote"},
      *      description="Get Quote",
      *      produces={"application/json"},
@@ -162,10 +161,12 @@ class QuoteAPIController extends AppBaseController
      *      )
      * )
      */
-    public function show($id)
+    public function show($id,Request $request)
     {
+        $withRelations=$this->getRelations($request);
+
         /** @var Quote $quote */
-        $quote = $this->quoteRepository->findByIdWith($id,['topics'],$this->fieldsToReturn);
+        $quote = $this->quoteRepository->findByIdWith($id,$withRelations,$this->fieldsToReturn);
         //dd($quote);
         if (empty($quote)) {
             return $this->sendError('Quote not found');
@@ -286,5 +287,17 @@ class QuoteAPIController extends AppBaseController
         $quote->delete();
 
         return $this->sendResponse($id, 'Quote deleted successfully');
+    }
+
+    /**
+     * @param Request $request
+     * @return array array of relations
+     */
+    public function getRelations(Request $request){
+        $expectedIncludes=['author','language','topics','quoteCategories'];
+        $includes=($request->input('include')!==null)?explode(',',$request->input('include')):[];
+
+        $withRelations=array_values(array_intersect($expectedIncludes,$includes));
+        return $withRelations;
     }
 }

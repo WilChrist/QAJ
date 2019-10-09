@@ -37,7 +37,7 @@ class Language extends Model
 {
 
     public $table = 'languages';
-    
+
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
@@ -65,6 +65,13 @@ class Language extends Model
     public static $rules = [
         'name' => 'required'
     ];
+
+    /**
+    * the fields that shouln't be retrieved
+    *
+    * @var array
+    */
+    protected $hidden = ['created_at','updated_at'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

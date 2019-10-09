@@ -51,10 +51,10 @@ class QuoteRepository extends BaseRepository
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
      */
     public function allWith($key){
-        return Quote::with($key)->get();
+        return Quote::where('approuved','=','1')->with($key)->get();
     }
     public function findByIdWith($id, $key, $columns = ['*']){
-        return Quote::with($key)->find($id, $columns);
+        return Quote::where('approuved','=','1')->with($key)->find($id, $columns);
     }
     /**
      * Retrieve all records including given relationship with pagination
@@ -69,7 +69,7 @@ class QuoteRepository extends BaseRepository
      */
     public function allSSLCWith($search = [], $skip = null, $limit = null, $columns = ['*'], $relations = [])
     {
-        $query = $this->allQuery($search, $skip, $limit);
+        $query = $this->allQuery($search, $skip, $limit)->where('approuved','=','1');
         $query->with($relations);
         return $query->get($columns);
     }
